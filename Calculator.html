@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RGB Calculator</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Segoe UI,sans-serif;
+}
+
+body{
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:
+    radial-gradient(circle at top left,#1e3a8a,#0f172a),
+    radial-gradient(circle at bottom right,#581c87,#020617);
+    overflow:hidden;
+}
+
+body::before{
+    content:"";
+    position:absolute;
+    width:500px;
+    height:500px;
+    background:linear-gradient(45deg,#00ffff,#ff00ff,#00ff88);
+    filter:blur(180px);
+    opacity:.25;
+    animation:rotate 12s linear infinite;
+}
+
+@keyframes rotate{
+    from{transform:rotate(0deg);}
+    to{transform:rotate(360deg);}
+}
+
+.calculator{
+    width:360px;
+    padding:20px;
+    border-radius:28px;
+    backdrop-filter:blur(20px);
+    background:rgba(255,255,255,.08);
+    border:1px solid rgba(255,255,255,.15);
+    box-shadow:
+    0 0 40px rgba(0,255,255,.15),
+    0 0 80px rgba(255,0,255,.08);
+}
+
+.display{
+    width:100%;
+    height:90px;
+    border:none;
+    outline:none;
+    border-radius:18px;
+    padding:20px;
+    text-align:right;
+    font-size:2rem;
+    color:white;
+    background:rgba(255,255,255,.08);
+    margin-bottom:20px;
+}
+
+.buttons{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:12px;
+}
+
+button{
+    height:68px;
+    border:none;
+    border-radius:18px;
+    background:rgba(255,255,255,.08);
+    color:white;
+    font-size:1.2rem;
+    cursor:pointer;
+    transition:.2s;
+    position:relative;
+    overflow:hidden;
+}
+
+button:hover{
+    transform:translateY(-3px);
+    box-shadow:
+    0 0 15px rgba(0,255,255,.4),
+    0 0 25px rgba(255,0,255,.25);
+}
+
+button:active{
+    transform:scale(.92);
+}
+
+button::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    opacity:0;
+    transition:.3s;
+    background:linear-gradient(
+    90deg,
+    #00ffff,
+    #00ff88,
+    #ff00ff);
+}
+
+button.active::before{
+    opacity:.25;
+}
+
+.operator{
+    background:rgba(0,255,255,.12);
+}
+
+.equal{
+    background:linear-gradient(135deg,#00ffff,#00ff88);
+    color:black;
+    font-weight:bold;
+}
+
+.clear{
+    background:linear-gradient(135deg,#ff4d4d,#ff0080);
+}
+
+.title{
+    color:white;
+    text-align:center;
+    margin-bottom:15px;
+    letter-spacing:2px;
+    font-weight:600;
+}
+</style>
+</head>
+<body>
+
+<div class="calculator">
+
+    <div class="title">CALCULATOR</div>
+
+    <input type="text" class="display" id="display" readonly>
+
+    <div class="buttons">
+        <button class="clear">C</button>
+        <button class="operator">(</button>
+        <button class="operator">)</button>
+        <button class="operator">/</button>
+
+        <button>7</button>
+        <button>8</button>
+        <button>9</button>
+        <button class="operator">*</button>
+
+        <button>4</button>
+        <button>5</button>
+        <button>6</button>
+        <button class="operator">-</button>
+
+        <button>1</button>
+        <button>2</button>
+        <button>3</button>
+        <button class="operator">+</button>
+
+        <button>0</button>
+        <button>.</button>
+        <button>⌫</button>
+        <button class="equal">=</button>
+    </div>
+
+</div>
+
+<script>
+const display = document.getElementById("display");
+const buttons = document.querySelectorAll("button");
+
+buttons.forEach(btn=>{
+
+    btn.addEventListener("click",()=>{
+
+        btn.classList.add("active");
+
+        setTimeout(()=>{
+            btn.classList.remove("active");
+        },250);
+
+        const value = btn.textContent;
+
+        if(value==="C"){
+            display.value="";
+        }
+
+        else if(value==="⌫"){
+            display.value=display.value.slice(0,-1);
+        }
+
+        else if(value==="="){
+            try{
+                display.value=eval(display.value);
+            }catch{
+                display.value="Error";
+            }
+        }
+
+        else{
+            display.value+=value;
+        }
+    });
+
+});
+</script>
+
+</body>
+</html>
